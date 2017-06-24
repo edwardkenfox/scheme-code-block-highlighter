@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>LISP code block highlighter</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+    </div>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        font-family: Roboto;
+        justify-content: center;
+      }
+      .main {
+        display: flex;
+        flex-direction: column;
+        width: 500px;
+      }
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+      .button {
+        background-color: #4fc08d;
+        border: 1px solid #4fc08d;
+        border-radius: 2em;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        padding: 0.75em 2em;
+        transition: all 0.15s ease;
+      }
+      .editor {
+        margin-bottom: 24px;
+      }
+      .editor > textarea {
+        width: 100%;
+      }
+      .preview {
+        background-color: #fafafa;
+        font-family: monospace;
+        padding: 12px;
+      }
+      .preview > .paren:hover {
+        background-color: aliceblue;
+      }
+      .preview > .paren > .paren:hover {
+        background-color: antiquewhite;
+      }
+      .preview > .paren > .paren > .paren:hover {
+        background-color: aqua;
+      }
+      .preview > .paren > .paren > .paren > .paren:hover {
+        background-color: lemonchiffon;
+      }
+      .preview > .paren > .paren > .paren > .paren > .paren:hover {
+        background-color: lightpink;
+      }
+      .preview > .paren > .paren > .paren > .paren > .paren > .paren:hover {
+        background-color: powderblue;
+      }
+      .preview > .paren > .paren > .paren > .paren > .paren > .paren > .paren:hover {
+        background-color: yellow;
+      }
+    </style>
+    <script>
+      const Preview = {
+        template: `
+          <div class="preview" v-html="formattedCode">
+          </div>
+        `,
+        props: {
+          code: {
+            type: String,
+            require: true
+          }
+        },
+        computed: {
+          formattedCode() {
+            const str = this.code
+              .replace(/\n/g, '<br>')
+              .replace(/\ /g, '&nbsp;')
+
+            let formattedStr = ''
+
+            for (i = 0; i < str.length; i++) {
+              const char = str[i]
+              if (char === '(') {
+                formattedStr = formattedStr.concat('<span class="paren">(')
+              } else if (char === ')') {
+                formattedStr = formattedStr.concat(')</span>')
+              } else {
+                formattedStr = formattedStr.concat(char)
+              }
+            }
+
+            return formattedStr
+          },
+        }
+      }
+
+      new Vue({
+        template: `
+          <div class="main">
+            <div class="editor">
+              <h1>LISP code block highlighter</h1>
+              <p>Write down some LISP code in text box, and see the preview below. When you hover over the code preview, the code blocks will be colored depending on the nest level of that block, which makes it a lot easier to understand the code structure.</p>
+              <div class="buttons">
+                <div class="button" @click="switchCode(1)">SAMPLE 1</div>
+                <div class="button" @click="switchCode(2)">SAMPLE 2</div>
+                <div class="button" @click="switchCode(3)">SAMPLE 3</div>
+              </div>
+              <textarea rows="20" v-model="code" placeholder="write some LISP code here...">
+              </textarea>
+            </div>
+            <preview :code="code">
+            </preview>
+          </div>
+        `,
+        data() {
+          return {
+            code: '',
+            sampleCodes: [
+              '(define (double x)\n  (+ x x))',
+              '(define (fib n)\n  (fib-iter 1 0 n))\n\n(define (fib-iter a b count)\n  (if (= count 0)\n    b\n    (fib-iter (+ a b) a (- count 1))))',
+              '(define (mult a b)\n  (define (double x)\n    (+ x x))\n  (define (halve x)\n    (/ x 2))\n  (define (even? n)\n    (= (remainder n 2) 0))\n\n  (if (= b 0)\n    a\n    (if (even? b)\n      ((mult (double a) (halve b))\n      (+ a (mult (- b 1)))))))',
+            ]
+          }
+        },
+        components: {
+          preview: Preview
+        },
+        methods: {
+          switchCode(num) {
+            this.code = this.sampleCodes[num - 1]
+          }
+        }
+      }).$mount('#app')
+    </script>
+  </body>
+</html>
