@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>LISP code block highlighter</title>
+    <title>Scheme code block highlighter</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
@@ -112,14 +112,14 @@
         template: `
           <div class="main">
             <div class="editor">
-              <h1>LISP code block highlighter</h1>
-              <p>Write down some LISP code in text box, and see the preview below. When you hover over the code preview, the code blocks will be colored depending on the nest level of that block, which makes it a lot easier to understand the code structure.</p>
+              <h1>Scheme code block highlighter</h1>
+              <p>Write down some Scheme code in text box, and see the preview below. When you hover over the code preview, the code blocks will be colored depending on the nest level of that block, which makes it a lot easier to understand the code structure.</p>
               <div class="buttons">
                 <div class="button" @click="switchCode(1)">SAMPLE 1</div>
                 <div class="button" @click="switchCode(2)">SAMPLE 2</div>
                 <div class="button" @click="switchCode(3)">SAMPLE 3</div>
               </div>
-              <textarea rows="20" v-model="code" placeholder="write some LISP code here...">
+              <textarea rows="20" v-model="code" placeholder="write some Scheme code here...">
               </textarea>
             </div>
             <preview :code="code">
